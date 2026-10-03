@@ -12,25 +12,18 @@ disagreed about a price, it would be because they were not using the same copy o
 
 ## Using it
 
-Today the two repositories are siblings on disk and depend on it by path:
+Both repositories install it from the tagged GitHub release:
 
 ```jsonc
 // in eCommerce/package.json and eCommerce-api/package.json
-"@ecom/contracts": "link:../eCommerce-contracts"
+"@ecom/contracts": "github:shubhamrathi020/eCommerce-contracts#v0.1.0"
 ```
 
-After you push this repository, replace that with a git dependency so CI and Docker can install it
-(pnpm builds it on install through the `prepare` script):
-
-```jsonc
-"@ecom/contracts": "github:<your-account>/eCommerce-contracts#v0.1.0"
-```
-
-Use a tag, never a branch, so a build is reproducible. A private npm registry (GitHub Packages) works too.
+pnpm builds it on install through the `prepare` script. Depend on a tag, never a branch, so a build is reproducible. A private npm registry (GitHub Packages) would work too.
 
 ## Changing it
 
-Change the contract here first, then bump the version, tag it, and update the two consumers.
+Change the contract here first, then bump `version`, tag it (`git tag -a vX.Y.Z -m ... && git push origin main vX.Y.Z`), and update the two consumers with `pnpm add -w github:shubhamrathi020/eCommerce-contracts#vX.Y.Z`.
 A breaking change (a removed field, a changed rule) needs both sides updated before either is deployed.
 
 ```bash
